@@ -22,7 +22,7 @@ jobs:
       
       - name: Update submodules from main
         run: |
-          git submodule update --remote --merge --allow-unrelated-histories
+          git submodule update --remote --merge
           
           if [[ -n $(git status --porcelain) ]]; then
             echo "Zmiany w submodułach:" > commit_message.txt
