@@ -22,13 +22,13 @@ jobs:
       
       - name: Update submodules from main
         run: |
-          git submodule update --remote --merge
+          git submodule update --remote
           
           if [[ -n $(git status --porcelain) ]]; then
             echo "Changes in submodules:" > commit_message.txt
             git submodule foreach 'git log -1 --pretty=format:"%s (%h)" || true' >> commit_message.txt
             
-            git submodule foreach 'git fetch origin && git reset --hard origin/main'
+            git submodule foreach 'git fetch origin && git merge origin/main --allow-unrelated-histories || git reset --hard origin/main'
             git add .
             git commit -F commit_message.txt
             git push
