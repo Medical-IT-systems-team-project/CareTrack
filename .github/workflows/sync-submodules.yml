@@ -28,7 +28,7 @@ jobs:
             echo "Changes in submodules:" > commit_message.txt
             git submodule foreach 'git log -1 --pretty=format:"%s (%h)" || true' >> commit_message.txt
             
-            git submodule foreach 'git pull origin main --allow-unrelated-histories'
+            git submodule foreach 'git fetch origin && git reset --hard origin/main'
             git add .
             git commit -F commit_message.txt
             git push
