@@ -1,0 +1,9 @@
+[submodule "MITP-frontend"]
+	path = MITP-frontend
+	url = git@github.com:Innocenttt3/MITP-frontend.git
+[submodule "MITP-mobile"]
+	path = MITP-mobile
+	url = git@github.com:Innocenttt3/MITP-mobile.git
+[submodule "MITP-backend"]
+	path = MITP-backend
+	url = git@github.com:Innocenttt3/MITP-backend.git
