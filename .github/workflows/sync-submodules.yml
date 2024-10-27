@@ -1,0 +1,36 @@
+name: Sync Submodules from Main
+
+on:
+  repository_dispatch:
+    types: [submodule-main-updated]
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main repository
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.PAT_TOKEN }}
+          submodules: recursive
+          
+      - name: Configure Git
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+      
+      - name: Update submodules from main
+        run: |
+          git submodule update --remote --merge
+          
+          if [[ -n $(git status --porcelain) ]]; then
+            echo "Zmiany w submodułach:" > commit_message.txt
+            git submodule foreach 'git log -1 --pretty=format:"%s (%h)" || true' >> commit_message.txt
+            
+            git add .
+            git commit -F commit_message.txt
+            git push
+          else
+            echo "Brak zmian do zsynchronizowania"
+          fi
