@@ -1,5 +1,5 @@
 Changes in submodules:
 Entering 'MITP-backend'
-added TODO (intellij test) (dc9cb5a)Entering 'MITP-frontend'
+added TODO for KW (e9bd650)Entering 'MITP-frontend'
 Inital commit (a1ba66c)Entering 'MITP-mobile'
 Initial commit (401b3d0)
