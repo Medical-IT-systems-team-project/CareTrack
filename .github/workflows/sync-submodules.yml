@@ -32,5 +32,5 @@ jobs:
             git commit -F commit_message.txt
             git push
           else
-            echo "Brak zmian do zsynchronizowania"
+            echo "No changes to sync"
           fi
