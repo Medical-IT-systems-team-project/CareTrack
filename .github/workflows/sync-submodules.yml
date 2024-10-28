@@ -3,35 +3,53 @@ name: Sync Submodules from Main
 on:
   repository_dispatch:
     types: [submodule-main-updated]
-  workflow_dispatch:
+  push:
+    branches: 
+      - main
 
 jobs:
+
   sync:
     runs-on: ubuntu-latest
+    
     steps:
-      - name: Checkout main repository
-        uses: actions/checkout@v2
-        with:
-          token: ${{ secrets.PAT_TOKEN }}
-          submodules: recursive
-          
-      - name: Configure Git
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-      
-      - name: Update submodules from main
-        run: |
-          git submodule update --remote
-          
-          if [[ -n $(git status --porcelain) ]]; then
-            echo "Changes in submodules:" > commit_message.txt
-            git submodule foreach 'git log -1 --pretty=format:"%s (%h)" || true' >> commit_message.txt
-            
-            git submodule foreach 'git fetch origin && git merge origin/main --allow-unrelated-histories || git reset --hard origin/main'
-            git add .
-            git commit -F commit_message.txt
-            git push
-          else
-            echo "No changes to sync"
-          fi
+    - name: Checkout main repository
+      uses: actions/checkout@v2
+      with:
+        token: ${{ secrets.PAT_TOKEN }}
+        submodules: recursive
+        
+    - name: Configure Git
+      run: |
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        
+    - name: Update submodules from main
+      run: |
+        git submodule update --remote
+        if [[ -n $(git status --porcelain) ]]; then
+          for submodule in $(git submodule status | awk '{print $2}')
+          do
+            echo "Entering '$submodule'" > "$submodule-changes.txt"
+            (cd "$submodule" && git log -1 --pretty=format:"- %s (%an)") >> "$submodule-changes.txt"
+          done
+          git add .
+          git commit -m "Update submodules" -F MITP-backend-changes.txt -F MITP-frontend-changes.txt -F MITP-mobile-changes.txt
+        else
+          echo "No changes to sync"
+          exit 0
+        fi
+        
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v3
+      with:
+        token: ${{ secrets.PAT_TOKEN }}
+        commit-message: "Update submodules"
+        title: "Update submodules"
+        body: |
+          This PR updates the submodules in the main repository.
+
+          Changes:
+          ${{ steps.update-submodules.outputs.changes }}
+        labels: submodule-update
+        branch: update-submodules
