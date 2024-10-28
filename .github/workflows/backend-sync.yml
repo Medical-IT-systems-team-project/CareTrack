@@ -1,5 +1,4 @@
-# .github/workflows/backend-sync.yml
-name: Sync Backend Submodule
+name: Sync Backend Submodule to main
 on:
   repository_dispatch:
     types: [submodule-main-updated]
@@ -36,6 +35,7 @@ jobs:
           fi
           
           echo "Updating submodule: $SUBMODULE_NAME"
+          
           git submodule update --remote --merge "$SUBMODULE_NAME"
           
           cd "$SUBMODULE_NAME"

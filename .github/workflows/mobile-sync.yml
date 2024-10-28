@@ -1,5 +1,4 @@
-# .github/workflows/frontend-sync.yml
-name: Sync Frontend Submodule
+name: Sync Mobile Submodule to main
 on:
   repository_dispatch:
     types: [submodule-main-updated]
@@ -7,7 +6,7 @@ on:
     branches:
       - main
 env:
-  EXPECTED_SUBMODULE: "MITP-mobile"
+  EXPECTED_SUBMODULE: "MITP-frontend"
 
 jobs:
   sync:
@@ -36,6 +35,7 @@ jobs:
           fi
           
           echo "Updating submodule: $SUBMODULE_NAME"
+          
           git submodule update --remote --merge "$SUBMODULE_NAME"
           
           cd "$SUBMODULE_NAME"
