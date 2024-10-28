@@ -8,7 +8,6 @@ on:
       - main
 
 jobs:
-
   sync:
     runs-on: ubuntu-latest
     
@@ -26,15 +25,31 @@ jobs:
         
     - name: Update submodules from main
       run: |
+        # Update all submodules to the latest commit from their respective branches
         git submodule update --remote
-        COMMIT_MESSAGE=""
-        for submodule in $(git submodule status | awk '{print $2}')
-        do
-          LAST_COMMIT=$(cd "$submodule" && git log -1 --pretty=format:"- %s (%an)")
-          COMMIT_MESSAGE="${COMMIT_MESSAGE}${LAST_COMMIT}\n"
+        
+        # Loop through submodules to find changes
+        for submodule in $(git submodule status | awk '{print $2}'); do
+          echo "Entering '$submodule'" >> "${submodule}-changes.txt"
+          LAST_COMMIT=$(cd "$submodule" && git log -1 --pretty=format:"- %s (%an) %ad" --date=short)
+          
+          # Append last commit info to the corresponding file
+          echo "$LAST_COMMIT" >> "${submodule}-changes.txt"
+          
+          # Check if there are any changes in the submodule
+          if [[ -n $(git diff --name-only "$submodule") ]]; then
+            cd "$submodule"
+            git add .
+            COMMIT_MESSAGE="Updated submodule: $submodule\n$LAST_COMMIT"
+            git commit -m "$COMMIT_MESSAGE"
+            cd -
+          fi
         done
+
+        # Check for changes in the main repository and commit if there are any
         if [[ -n $(git status --porcelain) ]]; then
           git add .
+          COMMIT_MESSAGE=$(cat MITP-backend-changes.txt MITP-frontend-changes.txt MITP-mobile-changes.txt | tr '\n' '\n\n')
           git commit -m "$COMMIT_MESSAGE"
           git push
         else
