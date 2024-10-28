@@ -1,2 +1,2 @@
 Entering 'MITP-backend'
-- added TODO for KW (kamilgolawski)
+- example struct for project (kamilgolawski)
