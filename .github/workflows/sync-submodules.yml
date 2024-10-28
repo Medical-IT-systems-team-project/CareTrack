@@ -2,9 +2,9 @@ name: Sync Submodules from Main
 
 on:
   repository_dispatch:
-    types: [submodule-main-updated]
+    types: [submodule-main-updated] 
   push:
-    branches: 
+    branches:
       - main
 
 jobs:
@@ -27,29 +27,15 @@ jobs:
     - name: Update submodules from main
       run: |
         git submodule update --remote
-        if [[ -n $(git status --porcelain) ]]; then
-          for submodule in $(git submodule status | awk '{print $2}')
-          do
-            echo "Entering '$submodule'" > "$submodule-changes.txt"
-            (cd "$submodule" && git log -1 --pretty=format:"- %s (%an)") >> "$submodule-changes.txt"
-          done
-          git add .
-          git commit -F MITP-backend-changes.txt -F MITP-frontend-changes.txt -F MITP-mobile-changes.txt
+        for submodule in $(git submodule status | awk '{print $2}')
+        do
+          echo "Entering '$submodule'" >> "$submodule-changes.txt"
+          (cd "$submodule" && git log -1 --pretty=format:"- %s (%an)") >> "$submodule-changes.txt"
+        done
+        git add .
+        git commit -F MITP-backend-changes.txt -F MITP-frontend-changes.txt -F MITP-mobile-changes.txt -m "Update submodules"
+        git push
         else
           echo "No changes to sync"
           exit 0
         fi
-        
-    - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v3
-      with:
-        token: ${{ secrets.PAT_TOKEN }}
-        commit-message: "Update submodules"
-        title: "Update submodules"
-        body: |
-          This PR updates the submodules in the main repository.
-
-          Changes:
-          ${{ steps.update-submodules.outputs.changes }}
-        labels: submodule-update
-        branch: update-submodules
