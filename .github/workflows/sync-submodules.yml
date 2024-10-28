@@ -28,6 +28,9 @@ jobs:
         # Update all submodules to the latest commit from their respective branches
         git submodule update --remote
         
+        # Flaga do monitorowania zmian
+        CHANGES_DETECTED=false
+
         # Loop through submodules to find changes
         for submodule in $(git submodule status | awk '{print $2}'); do
           echo "Entering '$submodule'" >> "${submodule}-changes.txt"
@@ -43,16 +46,21 @@ jobs:
             COMMIT_MESSAGE="Updated submodule: $submodule\n$LAST_COMMIT"
             git commit -m "$COMMIT_MESSAGE"
             cd -
+            CHANGES_DETECTED=true  # Zmiana wykryta
           fi
         done
 
         # Check for changes in the main repository and commit if there are any
-        if [[ -n $(git status --porcelain) ]]; then
-          git add .
-          COMMIT_MESSAGE=$(cat MITP-backend-changes.txt MITP-frontend-changes.txt MITP-mobile-changes.txt | tr '\n' '\n\n')
-          git commit -m "$COMMIT_MESSAGE"
-          git push
+        if [ "$CHANGES_DETECTED" = true ]; then
+          if [[ -n $(git status --porcelain) ]]; then
+            git add .
+            COMMIT_MESSAGE="Updated submodules: $(cat MITP-backend-changes.txt MITP-frontend-changes.txt MITP-mobile-changes.txt | tr '\n' '\n\n')"
+            git commit -m "$COMMIT_MESSAGE"
+            git push
+          else
+            echo "No changes in the main repository."
+          fi
         else
-          echo "No changes to sync"
+          echo "No changes to sync in submodules."
           exit 0
         fi
