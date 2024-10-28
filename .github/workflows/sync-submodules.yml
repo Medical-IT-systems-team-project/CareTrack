@@ -33,7 +33,7 @@ jobs:
           (cd "$submodule" && git log -1 --pretty=format:"- %s (%an)") >> "$submodule-changes.txt"
         done
         git add .
-        git commit -F MITP-backend-changes.txt -F MITP-frontend-changes.txt -F MITP-mobile-changes.txt -m "Update submodules"
+        git commit -F MITP-backend-changes.txt -F MITP-frontend-changes.txt -F MITP-mobile-changes.txt
         git push
         else
           echo "No changes to sync"
