@@ -1,0 +1,60 @@
+# .github/workflows/backend-sync.yml
+name: Sync Backend Submodule
+on:
+  repository_dispatch:
+    types: [submodule-main-updated]
+  push:
+    branches:
+      - main
+env:
+  EXPECTED_SUBMODULE: "MITP-backend"
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main repository
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.PAT_TOKEN }}
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Update specific submodule and transfer commit
+        run: |
+          SUBMODULE_NAME="${{ github.event.client_payload.submodule }}"
+          COMMIT_SHA="${{ github.event.client_payload.commit }}"
+          
+          if [ "$SUBMODULE_NAME" != "$EXPECTED_SUBMODULE" ]; then
+            echo "Received update for $SUBMODULE_NAME, but expected $EXPECTED_SUBMODULE"
+            exit 0
+          fi
+          
+          echo "Updating submodule: $SUBMODULE_NAME"
+          git submodule update --remote --merge "$SUBMODULE_NAME"
+          
+          cd "$SUBMODULE_NAME"
+          COMMIT_MSG=$(git log -1 --pretty=format:"%s")
+          AUTHOR_NAME=$(git log -1 --pretty=format:"%an")
+          cd ..
+          
+          LOG_FILE="${SUBMODULE_NAME}-changes.log"
+          echo "Update at $(date '+%Y-%m-%d %H:%M:%S')" >> "$LOG_FILE"
+          echo "Submodule: $SUBMODULE_NAME" >> "$LOG_FILE"
+          echo "Author: $AUTHOR_NAME" >> "$LOG_FILE"
+          echo "Commit message: $COMMIT_MSG" >> "$LOG_FILE"
+          echo "----------------------------------------" >> "$LOG_FILE"
+          
+          if git diff --quiet; then
+            echo "No changes to commit"
+            exit 0
+          else
+            git add .
+            git commit -m "$COMMIT_MSG ($AUTHOR_NAME)"
+            git push
+          fi

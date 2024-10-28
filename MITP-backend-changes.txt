@@ -1,2 +1,0 @@
-Entering 'MITP-backend'
-- example struct for project (kamilgolawski)
