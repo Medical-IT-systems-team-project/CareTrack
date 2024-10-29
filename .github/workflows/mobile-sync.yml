@@ -6,7 +6,7 @@ on:
     branches:
       - main
 env:
-  EXPECTED_SUBMODULE: "MITP-frontend"
+  EXPECTED_SUBMODULE: "MITP-mobile"
 
 jobs:
   sync:
