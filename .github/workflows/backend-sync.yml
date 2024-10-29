@@ -2,9 +2,7 @@ name: Sync Backend Submodule to main
 on:
   repository_dispatch:
     types: [submodule-main-updated]
-  push:
-    branches:
-      - main
+
 env:
   EXPECTED_SUBMODULE: "MITP-backend"
 
