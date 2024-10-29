@@ -9,6 +9,7 @@ env:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    if: github.event.client_payload.submodule == 'MITP-backend'
     steps:
       - name: Checkout main repository
         uses: actions/checkout@v2
