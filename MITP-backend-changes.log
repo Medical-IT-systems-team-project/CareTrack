@@ -23,3 +23,8 @@ Submodule: MITP-backend
 Author: pawel
 Commit message: config
 ----------------------------------------
+Update at 2024-11-03 14:37:40
+Submodule: MITP-backend
+Author: pawel
+Commit message: setup config 1) set up port to 9090 (from 8080) 2) fixed compose.yaml configuration in properties 3) set up liquibase configuration
+----------------------------------------
