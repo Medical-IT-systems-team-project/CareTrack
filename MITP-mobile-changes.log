@@ -93,3 +93,8 @@ Submodule: MITP-mobile
 Author: MichalRymarski
 Commit message: feat : Add swipe to change case tab
 ----------------------------------------
+Update at 2025-01-15 16:29:17
+Submodule: MITP-mobile
+Author: MichalRymarski
+Commit message: fix : Loading screens now do not show UI if already logged in
+----------------------------------------
