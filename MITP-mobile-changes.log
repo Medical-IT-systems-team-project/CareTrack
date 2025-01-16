@@ -98,3 +98,8 @@ Submodule: MITP-mobile
 Author: MichalRymarski
 Commit message: fix : Loading screens now do not show UI if already logged in
 ----------------------------------------
+Update at 2025-01-16 10:58:44
+Submodule: MITP-mobile
+Author: MichalRymarski
+Commit message: fix: QrScanner now slides out more before killing itself
+----------------------------------------
