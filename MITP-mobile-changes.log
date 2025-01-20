@@ -103,3 +103,8 @@ Submodule: MITP-mobile
 Author: MichalRymarski
 Commit message: fix: QrScanner now slides out more before killing itself
 ----------------------------------------
+Update at 2025-01-20 21:01:13
+Submodule: MITP-mobile
+Author: MichalRymarski
+Commit message: fix: NewPatient form now shows errors correctly
+----------------------------------------
