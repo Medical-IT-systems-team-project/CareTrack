@@ -28,12 +28,12 @@
 PatientPath is a medical management application designed to streamline the process of managing patient disease progression. When a patient is admitted to the hospital, our application assists in overseeing their health journey, ensuring efficient communication and care.
 
 # Showcase of application
-![main_light-portrait](https://github.com/user-attachments/assets/8b638b1d-80d7-4a10-a9c0-e05e3e97ff57)
-![case_info_light-portrait](https://github.com/user-attachments/assets/d51b6a12-9b50-45a6-881b-cc03dbe4afee)
-![medication_light-portrait](https://github.com/user-attachments/assets/bbfcf28a-ff0f-44a4-97e5-c6f7e227ffcf)
-![new_medication_light-portrait](https://github.com/user-attachments/assets/bc39e384-7921-4fb5-932d-7bc9e3ee03ad)
-![new_patient_light-portrait](https://github.com/user-attachments/assets/a2cd0cb0-9313-4568-ab41-416f0e172786)
-![share_id_light-portrait](https://github.com/user-attachments/assets/2138337e-adeb-49cb-8e15-b97777c72f0a)
+<img src="https://github.com/user-attachments/assets/8b638b1d-80d7-4a10-a9c0-e05e3e97ff57" alt="Main" width="300" height="600"/>
+<img src="https://github.com/user-attachments/assets/d51b6a12-9b50-45a6-881b-cc03dbe4afee" alt="Case" width="300" height="600"/>
+<img src="https://github.com/user-attachments/assets/bbfcf28a-ff0f-44a4-97e5-c6f7e227ffcf" alt="Medication" width="300" height="600"/>
+<img src="https://github.com/user-attachments/assets/bc39e384-7921-4fb5-932d-7bc9e3ee03ad" alt="New Medication" width="300" height="600"/>
+<img src="https://github.com/user-attachments/assets/a2cd0cb0-9313-4568-ab41-416f0e172786" alt="New Patient" width="300" height="600"/>
+<img src="https://github.com/user-attachments/assets/2138337e-adeb-49cb-8e15-b97777c72f0a" alt="Share ID" width="300" height="600"/>
 
 # Mobile
 https://github.com/Medical-IT-systems-team-project/MITP-mobile
